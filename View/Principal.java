@@ -16,7 +16,7 @@ import DAO.DAOTeam;
 import DAO.DAOTechnician;
 public class Principal {
 	
-	//mudanças
+	//mudanças radicais
 	public static void main(String[] args) {
 		int operation = 0, registration = 0, endProgram = 0, update = 0; /* Registra a escolha do tipo de operacao que o usuario quer realizar */
 		DAOSoccer nSoccer = new DAOSoccer(); 

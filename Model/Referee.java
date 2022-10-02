@@ -6,7 +6,7 @@ public class Referee  {
 	private String name;
 	private String nationality;
 
-	//Getters e Setters
+	//Getters e Setters.
 	
 	public String getUuid() {
 		return uuid;

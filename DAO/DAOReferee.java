@@ -9,7 +9,7 @@ public class DAOReferee implements IDAO {
 	private ArrayList <Referee> referee = new ArrayList<Referee>();
 
 	
-	//@Override
+	@Override
 	public void create() {
 		
 		/* DECLARAÇÃO DOS ATRIBUTOS  */
@@ -43,7 +43,7 @@ public class DAOReferee implements IDAO {
 		
 	}
 	
-	//@Override
+	@Override
 	public void readAll() {
 		int i = 0; 
 		System.out.println(" \n Lista de todos os Arbitros: \n");
@@ -54,7 +54,7 @@ public class DAOReferee implements IDAO {
 		
 	}
 	
-	//@Override
+	@Override
 	public void readOne() {
 		@SuppressWarnings("resource")
 		Scanner read = new Scanner(System.in);
@@ -80,7 +80,7 @@ public class DAOReferee implements IDAO {
 		
 	}
 	
-	//@Override
+	@Override
 	public void updateName() {
 		String actuallyName, updateName; 
 		@SuppressWarnings("resource")
@@ -128,7 +128,7 @@ public class DAOReferee implements IDAO {
 			
 	}
 	
-	//@Override
+	@Override
 	public void delete() {
 		String name; 
 		@SuppressWarnings("resource")

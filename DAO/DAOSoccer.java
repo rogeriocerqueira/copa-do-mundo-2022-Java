@@ -272,6 +272,17 @@ public class DAOSoccer implements IDAO {
 			
 		}
 	}
-
+	
+	/*Recebe o nome da selecao e retorna um array de string com nomes dos jogadores */
+	public String[] ListSoccer(String teamNationality) {
+		String[] nameSoccer = new String[26];
+		String team;
+		for (int i = 0; i < soccer.size(); i++) {
+			team = soccer.get(i).getNationality();
+			if(teamNationality.equals(team))
+				nameSoccer[i] = soccer.get(i).getName();
+		}
+		return nameSoccer;
+	}
 	
 }

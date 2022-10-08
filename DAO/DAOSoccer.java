@@ -141,49 +141,35 @@ public class DAOSoccer implements IDAO {
 			return false;
 		}
 		
-		public void updateRedCard() {
-			String searchName; 		
-			int updateRedCard;
-			@SuppressWarnings("resource")
-			Scanner read = new Scanner(System.in);
-			
-			System.out.println("Digite o nome do jogador que deseja buscar:");
-			searchName = read.next();
+		public boolean updateRedCard(String nameSoccer, int updateRedCard) {
 			
 			/* Busca pelo nome e altera a seleção do jogador. */
 			for(int i = 0; i<soccer.size(); i++) {
-				String nameComp = soccer.get(i).getName();			
+				String nameComp = soccer.get(i).getName();
+				
 				/* Verificando a existencia do jogador na lista */
-				if (searchName.equals(nameComp)) {
-					System.out.println("Digite a quantidade de cartao Vermelho:");
-					updateRedCard = read.nextInt();
+				if (nameComp.equals(nameSoccer)) {
 					soccer.get(i).setYellowCard(updateRedCard);	
 					/* Verifica se o limite de catões possiveis estao sendo atendidos */
 					checkerCards(soccer.get(i));
+					return true;
 				} 
 			}
-				
+			return false;
 		}
 		
-		public void upadatePoints() {
-			String searchName; 
-			int updatePoints;
-			@SuppressWarnings("resource")
-			Scanner read = new Scanner(System.in);
-			
-			System.out.println("Digite o nome do jogador que deseja buscar:");
-			searchName = read.next();
+		public boolean upadatePoints(String searchName, int updaterPoints) {
+
 			
 			/* Busca pelo nome e altera a quantidade de gols do jogador. */
 			for(int i = 0; i<soccer.size(); i++) {
 				String nameComp = soccer.get(i).getName();
-				if (searchName.equals(nameComp)) {
-					
-					System.out.println("Digite a quantidade de gols que ele fez:");
-					updatePoints = read.nextInt();
-					soccer.get(i).setPoints(updatePoints);
+				if(searchName.equals(nameComp)) {
+					soccer.get(i).setPoints(updaterPoints);
+					return true;
 				} 
 			}
+			return false;
 				
 		}
 

@@ -19,7 +19,7 @@ public class Principal {
 	public static void main(String[] args) {
 		int operation = 0, registration = 0, endProgram = 0, update = 0; /* Registra a escolha do tipo de operacao que o usuario quer realizar */
 		
-				
+		
 		/* DECLARAÇÃO DOS ATRIBUTOS  */
 		int redCard, yellowCard, points; 
 		String name, nationality;
@@ -101,7 +101,7 @@ public class Principal {
 				}
 				
 				
-				else System.out.println("Digite uma opçcao valida ");
+				else System.out.println("Digite uma opção válida ");
 								
 				break;	
 				
@@ -216,17 +216,41 @@ public class Principal {
 						}
 						
 						else System.out.println("O nome " + searchName + "não foi encontrado, não houve alterações em cartões:\n");
-
-						}
 						
 					}
 					
-					else if (update == 4) nSoccer.updateRedCard();
+					else if (update == 4) {
+						
+						System.out.println("Digite o nome do jogador que deseja buscar:");
+						String searchName = read.next();
+						System.out.println("Digite a quantidade de cartoes vermelhos que o jogador recebeu:");
+						int updateredCard = read.nextInt();
+						
+						if(nSoccer.updateRedCard(searchName,updateredCard)) {
+							
+							System.out.println("O cartão do jogador " + searchName + " foi atualizado corretamente\n");
+
+						}
+						else {
+							
+						System.out.println("O cartão do jogador " + searchName + " foi atualizado corretamente\n");
+
+						}
+					}
 					
-					else if (update == 5) nSoccer.upadatePoints();
+					else if (update == 5) {
 					
-				}
-				
+						System.out.println("Digite o nome do jogador que deseja buscar:");
+						String searchName = read.next();
+						System.out.println("Digite a quantidade de gols do jogador:");
+						int updaterPoints= read.nextInt();
+						
+						nSoccer.upadatePoints(searchName, updaterPoints );
+						
+					
+					
+					}
+
 				if (registration == 2) {
 					
 					System.out.println("\n");
@@ -268,14 +292,11 @@ public class Principal {
 	
 					else if (registration == 2 ) nTeam.updatetechnician();
 				}	
-				
-				
+			}
 				break;
 				
-				
-				
 			case 5: 
-				System.out.println("Qual tipo de Operacao deseja Deletar?\n ");
+				System.out.println("Qual tipo de Operacao deseja Deletar?\n");
 				System.out.println("1- Deletar Jogador\n");
 				System.out.println("2- Deletar Técnico\n");
 				System.out.println("3- Deletar Arbitro\n");
@@ -287,14 +308,11 @@ public class Principal {
 					System.out.println("Digite o nome do jogador que deseja deletar:\n");
 					String deleteName = read.nextLine();
 					
-					if (nSoccer.delete(deleteName)) System.out.println("O nome " + deleteName + " foi atualizado para " + updaterName);
-					
+					if (nSoccer.delete(deleteName)) System.out.println("O nome " + deleteName + " foi deletado");
 					else System.out.println("O nome " + deleteName + "não foi encontrado");
 						
 				}
-						
 					
-				}
 				
 				else if (registration == 2) nTechnician.delete();
 
@@ -309,13 +327,14 @@ public class Principal {
 			default: 
 				System.out.println("Opcao Invalida?\n ");
 				
-			}
-				
 		System.out.println("Deseja continuar no programa ?");
 		System.out.println("0 - Sim \t 1 - Nao \n ");
 		endProgram = read.nextInt();
-		} while(endProgram == 0);
-
 	}
-	
+		} while(endProgram == 0);
+		
+	}
 }
+		
+
+		

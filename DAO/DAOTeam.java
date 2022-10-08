@@ -1,12 +1,14 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Random;
 import java.util.Scanner;
 import Model.Team;
 
 public class DAOTeam  implements IDAO{
 	ArrayList <Team> team = new ArrayList<Team>();
+	Hashtable <String, String[]> listSoccers = new Hashtable<>();
 
 	
 	//@Override
@@ -20,10 +22,6 @@ public class DAOTeam  implements IDAO{
 		
 		/* GERA UM CÓDIGO ÚNICO PELA RECURSIVIDADE DO METODO GENERATEUUID() */
 		String codteam = generateUuid();
-		
-		/* LEITURA DAS VARIAVEIS */
-		System.out.println("Digite o nome da Selecao:");
-		name = read.nextLine();
 		
 		System.out.println("Digite o nome do tecnico da Selecao:");
 		technician = read.nextLine();
@@ -161,6 +159,9 @@ public class DAOTeam  implements IDAO{
         return "Team"+uuid;
     }
 	
-
+	public void listSoccer (String nameTeam, String[] listSoccer ) {
+		listSoccers.put(nameTeam, listSoccer);
+	}
 	
 }
+

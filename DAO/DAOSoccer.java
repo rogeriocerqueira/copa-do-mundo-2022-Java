@@ -7,40 +7,22 @@ import java.util.Scanner;
 
 public class DAOSoccer implements IDAO {
 	ArrayList <Soccer> soccer = new ArrayList<Soccer>();
-
 	
+	String name, nationality, codSoccer = generateUuid();
+	int redCard, yellowCard, points;
+	Scanner read = new Scanner(System.in);
+	
+	public DAOSoccer(String name, String nationality, int redCard, int yellowCard, int points){
+		super();
+		this.name = name;
+		this.nationality = nationality;
+		this.redCard = redCard;
+		this.yellowCard = yellowCard;
+		this.points = points;
+	}
+
 	//@Override
 	public void create() {
-		
-		/* DECLARAÇÃO DOS ATRIBUTOS  */
-		int redCard, yellowCard, points; 
-		String name, nationality;
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-	
-		
-		/* GERA UM CÓDIGO ÚNICO PELA RECURSIVIDADE DO METODO GENERATEUUID() */
-		String codSoccer = generateUuid();
-		
-		/* LEITURA DAS VARIAVEIS */
-		System.out.println("Digite o nome do jogador:");
-		name = read.nextLine();
-		
-		
-		System.out.println("Digite a nacionalidade do jogador:");
-		nationality = read.nextLine();
-		
-		
-		System.out.println("Quantidade cartão de cartão Amarelo:");
-		yellowCard = read.nextInt();
-
-		
-		System.out.println("Quantidade cartão de cartão Vermelho:");
-		redCard = read.nextInt();
-		if(redCard > 1) redCard = 1;
-		
-		System.out.println("Quantidade de Gols:");
-		points = read.nextInt();
 		
 		/*INSTANCIANDO O OBJETO E SETANDO OS VALORES  */
 		Soccer nSoccer = new Soccer(); 
@@ -56,12 +38,10 @@ public class DAOSoccer implements IDAO {
 		
 		/* ADICIONANDO O OBJETO NO ARRAYLIST */
 		soccer.add(nSoccer); // Criando o objeto e instanciando no ArrayList
-		
-		
-		
+	
 	}
 	
-	//@Override
+	@Override
 	public void readAll() {
 		int i = 0; 
 		System.out.println(" \n Lista de todos os Jogadores: \n");
@@ -72,17 +52,10 @@ public class DAOSoccer implements IDAO {
 		}
 		
 	}
-	 
 	
-	//@Override
-	public void readOne() {
+	@Override
+	public void readOne(String name) {
 		
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		String name;
-		
-		System.out.println("Digite o nome do Jogador que deseja procurar:\n");
-		name = read.nextLine();
 		for(int i = 0; i<soccer.size(); i++ ) {
 			
 			String nameComp = soccer.get(i).getName();
@@ -106,183 +79,157 @@ public class DAOSoccer implements IDAO {
 		
 	}
 	
-	//@Override
-	public void updateName() {
-		String actuallyName, updateName; 
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		
-		System.out.println("Digite o nome do jogador que deseja alterar:");
-		actuallyName = read.nextLine();
-		
-		
-		
+	@Override
+	public boolean updateName(String searchName, String updaterName) {
+		String actuallyName; 
 		for(int i = 0; i<soccer.size(); i++) {
-			String nameComp = soccer.get(i).getName();
-			if (actuallyName.equals(nameComp)) {
-				
-				System.out.println("Digite o nome correto:");
-				updateName = read.nextLine();
-				soccer.get(i).setName(updateName);
-				System.out.println("O nome: " + actuallyName + " foi alterado com sucesso" + updateName);
-			} 
-		}
-		
-		
-				
-	}
-	
-	public void updateNationality() {
-		String searchName, updateNationality; 
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		
-		System.out.println("Digite o nome do jogador que deseja alterar:");
-		searchName = read.nextLine();
-		
-		/* Busca pelo nome e altera a seleção do jogador. */
-		 
-		for(int i = 0; i<soccer.size(); i++) {
-			String nameComp = soccer.get(i).getName();
-			if (searchName.equals(nameComp)) {
-				
-				System.out.println("Digite o nome correto:");
-				updateNationality = read.nextLine();
-				soccer.get(i).setNationality(updateNationality);
-			} 
-		}
-	}
-	
-	public void updateYellowCard() {
-		String searchName; 		
-		int updateYellowCard;
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		
-		System.out.println("Digite o nome do jogador que deseja buscar:");
-		searchName = read.next();
-		
-		/* Busca pelo nome e altera a seleção do jogador. */
-		for(int i = 0; i<soccer.size(); i++) {
-			String nameComp = soccer.get(i).getName();
+			actuallyName = soccer.get(i).getName();
 			
-			/* Verificando a existencia do jogador na lista */
-			if (searchName.equals(nameComp)) {
-				System.out.println("Digite a quantidade de cartoes amarelo:");
-				updateYellowCard = read.nextInt();
-				soccer.get(i).setYellowCard(updateYellowCard);	
-				/* Verifica se o limite de catões possiveis estao sendo atendidos */
-				checkerCards(soccer.get(i));
-			} 
-		}
-			
+			if (actuallyName.equals(updaterName)) {
+				soccer.get(i).setName(updaterName);
+				return true;
+			}
+		}	
+		return false;
 	}
 	
-	public void updateRedCard() {
-		String searchName; 		
-		int updateRedCard;
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
+	@Override
+	public boolean delete(String deleteName) {
 		
-		System.out.println("Digite o nome do jogador que deseja buscar:");
-		searchName = read.next();
-		
-		/* Busca pelo nome e altera a seleção do jogador. */
-		for(int i = 0; i<soccer.size(); i++) {
-			String nameComp = soccer.get(i).getName();			
-			/* Verificando a existencia do jogador na lista */
-			if (searchName.equals(nameComp)) {
-				System.out.println("Digite a quantidade de cartao Vermelho:");
-				updateRedCard = read.nextInt();
-				soccer.get(i).setYellowCard(updateRedCard);	
-				/* Verifica se o limite de catões possiveis estao sendo atendidos */
-				checkerCards(soccer.get(i));
-			} 
-		}
-			
-	}
-	
-	public void upadatePoints() {
-		String searchName; 
-		int updatePoints;
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		
-		System.out.println("Digite o nome do jogador que deseja buscar:");
-		searchName = read.next();
-		
-		/* Busca pelo nome e altera a quantidade de gols do jogador. */
-		for(int i = 0; i<soccer.size(); i++) {
-			String nameComp = soccer.get(i).getName();
-			if (searchName.equals(nameComp)) {
-				
-				System.out.println("Digite a quantidade de gols que ele fez:");
-				updatePoints = read.nextInt();
-				soccer.get(i).setPoints(updatePoints);
-			} 
-		}
-			
-	}
-	
-	//@Override
-	public void delete() {
-		String name;
-		@SuppressWarnings("resource")
-		Scanner read = new Scanner(System.in);
-		System.out.println("Digite o nome do jogador:");
-		name = read.nextLine();
 		//Procura o nome no ArrayList e remove se encontrar
 		for(int i = 0; i<soccer.size(); i++) {
 			String nameComp = soccer.get(i).getName();
-			if (name.equals(nameComp)) soccer.remove(i);
-			System.out.println("O nome: " + name + " foi deletado com sucesso");
+			if (name.equals(nameComp)) {
+				soccer.remove(i);
+				return true;
+			}
 		}
 		
-		
-	}
-	
-	private String generateUuid() { 
-		
-		//Gera um código aleatorio
-        Random generator = new Random();
-        int uuid =   generator.nextInt(9999);
-
-        //Verifica a unicidade do codigo
-        String codSoccer; 
-        for(int i = 0; i < soccer.size(); i++) {
-        	codSoccer = soccer.get(i).getUuid();
-        	if (codSoccer.equals("Jog"+uuid)) {
-        		generateUuid();	
-        	}
-        }
-       
-        return "Jog"+uuid;
-    }
-	
-	private void checkerCards (Soccer nSoccer ) {
-		
-		/*Garantindo que o numero nao exceda o limite */ 
-		if(nSoccer.getYellowCard() >= 2) { 
-			nSoccer.setRedCard(1);
-			nSoccer.setYellowCard(2);
-		}
-		
-		else if (nSoccer.getRedCard() > 1 ) {
-			nSoccer.setRedCard(1);
+		return false;
 			
-		}
 	}
 	
-	/*Recebe o nome da selecao e retorna um array de string com nomes dos jogadores */
-	public String[] ListSoccer(String teamNationality) {
-		String[] nameSoccer = new String[26];
-		String team;
-		for (int i = 0; i < soccer.size(); i++) {
-			team = soccer.get(i).getNationality();
-			if(teamNationality.equals(team))
-				nameSoccer[i] = soccer.get(i).getName();
-		}
-		return nameSoccer;
-	}
 	
+	public boolean updateNationality(String searchNationality, String updateNationality) {
+		String actuallyName; 
+		for(int i = 0; i<soccer.size(); i++) {
+			actuallyName = soccer.get(i).getName();
+			
+			if (actuallyName.equals(searchNationality)) {
+				soccer.get(i).setName(updateNationality);
+				return true;
+			}
+		}	
+		return false;
+	}
+		
+		public boolean updateYellowCard(String nameSoccer, int updateYellowCard) {
+
+			/* Busca pelo nome e altera a seleção do jogador. */
+			for(int i = 0; i<soccer.size(); i++) {
+				String nameComp = soccer.get(i).getName();
+				
+				/* Verificando a existencia do jogador na lista */
+				if (nameComp.equals(nameSoccer)) {
+					soccer.get(i).setYellowCard(updateYellowCard);	
+					/* Verifica se o limite de catões possiveis estao sendo atendidos */
+					checkerCards(soccer.get(i));
+					return true;
+				} 
+			}
+				
+			return false;
+		}
+		
+		public void updateRedCard() {
+			String searchName; 		
+			int updateRedCard;
+			@SuppressWarnings("resource")
+			Scanner read = new Scanner(System.in);
+			
+			System.out.println("Digite o nome do jogador que deseja buscar:");
+			searchName = read.next();
+			
+			/* Busca pelo nome e altera a seleção do jogador. */
+			for(int i = 0; i<soccer.size(); i++) {
+				String nameComp = soccer.get(i).getName();			
+				/* Verificando a existencia do jogador na lista */
+				if (searchName.equals(nameComp)) {
+					System.out.println("Digite a quantidade de cartao Vermelho:");
+					updateRedCard = read.nextInt();
+					soccer.get(i).setYellowCard(updateRedCard);	
+					/* Verifica se o limite de catões possiveis estao sendo atendidos */
+					checkerCards(soccer.get(i));
+				} 
+			}
+				
+		}
+		
+		public void upadatePoints() {
+			String searchName; 
+			int updatePoints;
+			@SuppressWarnings("resource")
+			Scanner read = new Scanner(System.in);
+			
+			System.out.println("Digite o nome do jogador que deseja buscar:");
+			searchName = read.next();
+			
+			/* Busca pelo nome e altera a quantidade de gols do jogador. */
+			for(int i = 0; i<soccer.size(); i++) {
+				String nameComp = soccer.get(i).getName();
+				if (searchName.equals(nameComp)) {
+					
+					System.out.println("Digite a quantidade de gols que ele fez:");
+					updatePoints = read.nextInt();
+					soccer.get(i).setPoints(updatePoints);
+				} 
+			}
+				
+		}
+
+		private String generateUuid() { 
+			
+			//Gera um código aleatorio
+	        Random generator = new Random();
+	        int uuid =   generator.nextInt(9999);
+
+	        //Verifica a unicidade do codigo
+	        String codSoccer; 
+	        for(int i = 0; i < soccer.size(); i++) {
+	        	codSoccer = soccer.get(i).getUuid();
+	        	if (codSoccer.equals("Jog"+uuid)) {
+	        		generateUuid();	
+	        	}
+	        }
+	       
+	        return "Jog"+uuid;
+	    }
+		
+		private void checkerCards (Soccer nSoccer ) {
+			
+			/*Garantindo que o numero nao exceda o limite */ 
+			if(nSoccer.getYellowCard() >= 2) { 
+				nSoccer.setRedCard(1);
+				nSoccer.setYellowCard(2);
+			}
+			
+			else if (nSoccer.getRedCard() > 1 ) {
+				nSoccer.setRedCard(1);
+				
+			}
+		}
+		
+		/*Recebe o nome da selecao e retorna um array de string com nomes dos jogadores */
+		public String[] ListSoccer(String teamNationality) {
+			String[] nameSoccer = new String[26];
+			String team;
+			for (int i = 0; i < soccer.size(); i++) {
+				team = soccer.get(i).getNationality();
+				if(teamNationality.equals(team))
+					nameSoccer[i] = soccer.get(i).getName();
+			}
+			return nameSoccer;
+		}
 }
+
+

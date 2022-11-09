@@ -12,28 +12,61 @@ do código, e estou ciente que estes trechos não serão considerados para fins 
 package Main; /*MVC*/
 
 import java.util.Scanner;
+
+import Controller.DAOMatch;
 import Controller.DAOReferee;
 import Controller.DAOSoccer;
 import Controller.DAOTeam;
 import Controller.DAOTechnician;
-import View.OperetionDef;
+import View.OperationDef;
 import View.RegistrationDef;
+import Model.Group;
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/	
 
-public class Principal {
+public class SysCopa2 {
 	
 	public static void main(String[] args) {
 		
-		int endProgram = 0; /* Registra a escolha do tipo de operacao que o usuario quer realizar */
+		String name = ""; 
+		String nationality = ""; 
+		String teamKey = ""; 
+		String technician = "";
+		String groupName = "";
+		String date = "";
+		String local = "";
+		String teamOne = "";
+		String teamTwo = "";
+		String groupMatch = "";
+		String codMatch = ""; 
+		String time = "";
+		
+		int yellowCard = 0;
+		int redCard = 0; 
+		int points = 0; 
+		int golsT1 = 0;
+		int golsT2 = 0; 
+		int rank = 0;
+		
+		int operation = 0;  /* Registra a escolha dos tipos de operação e tipos de usuário */
+		int registration = 0;
+		int endProgram = 0;
 		
 		/*Intanciação dos objetos referentes ao package Controller e DAO's de cada classe especifica */
-		DAOSoccer nSoccer = new DAOSoccer(String name, String nationality, int redCard, int yellowCard, int points);
-		DAOTechnician nTechnician = new DAOTechnician(String name, String nationality, String teamKey, int redCard, int yellowCard);
-		DAOReferee nReferee = new DAOReferee(String name, String nationality);
-		DAOTeam nTeam = new DAOTeam(String name, String technician, String groupName);
-		DAOGroup nGroup = new DAOTeam(String name, String technician);
-		DAOMatch nTeam = new DAOTeam(String name, String technician);
+		
+		DAOSoccer nSoccer = new DAOSoccer( name,  nationality,  yellowCard,  redCard, points);
+		
+		DAOTechnician nTechnician = new DAOTechnician( name,  nationality,  teamKey,  redCard,  yellowCard);
+		
+		DAOReferee nReferee = new DAOReferee( name,  nationality);
+		
+		DAOTeam nTeam = new DAOTeam( name,  technician,  groupName,  rank);
+		
+		DAOMatch nMatch = new DAOMatch ( date,  local,  teamOne,  teamTwo,  groupMatch,  codMatch,  time, golsT1,  golsT2);
+		
+		Group GsChampions = new Group();
+		
+		
 		
 		/*Implementação dos objetos de operação*/
 		
@@ -44,17 +77,15 @@ public class Principal {
 		do { 
 			
 			OperationDef choiceOne = new OperationDef();
-			int operation = choiceOne.definitionOne;
+			operation = choiceOne.definitionOne();
 			
+			RegistrationDef choiceTwo = new RegistrationDef();
+			registration = choiceTwo.definitionTwo(operation);
 			
-			switch (operation) {
-			
+			switch (operation) {			
 			
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 			case 1: /*Operação = Cadastro*/
-				
-				RegistrationDef choiceTwo = new RegistrationDef(operation);
-				int registration = choiceTwo.definitionTwo;
 				
 				if (registration == 1) {
 					
@@ -129,11 +160,43 @@ public class Principal {
 					groupName = read.nextLine();
 					
 					nTeam.create();
+					GsChampions.addOnGroup(time);
+					
+				}
+				
+				else if (registration ==5) {
+					
+					/* LEITURA DAS VARIAVEIS */
+					System.out.println("Digite a data da partida: \n " + "Exemplo d formato 00110011");
+					date = read.nextLine();
+					
+					System.out.println("Digite o local da partida: \n ");
+					local = read.nextLine();
+					
+					System.out.println("Digite o horário da partida:\n -> 7:00 \n -> 10:00  \n -> 13:00 \n -> 16:00 \n ");
+					time = read.nextLine();
+					
+					System.out.println("Digite o time 1: \n");
+					teamOne = read.nextLine();
+					
+					System.out.println("Digite o time 2: \n");
+					teamTwo = read.nextLine();
+					
+					System.out.println("Digite o grupo do qual faz parte os times: \n");
+					groupMatch = read.nextLine();
+					
+					System.out.println("Digite o nº de gols do time" + teamOne + ":" + "\n");
+					golsT1 = read.nextInt();
+					
+					System.out.println("Digite o nº de gols do time" + teamTwo + ":" + "\n");
+					golsT2 = read.nextInt();
+					
+					nMatch.registrationMatch();
 					
 				}
 				
 				
-				else System.out.println(" Digite uma opção válida ! /n ");
+				else System.out.println(" Digite uma opção válida ! \n ");
 								
 			break;	
 
@@ -141,50 +204,63 @@ public class Principal {
 			
 			case 2: /*Operação = Buscar*/
 				
-				RegistrationDef choiceTwo = new RegistrationDef(opration);
-				int registration = choiceTwo.definitionTwo;
 				
 				if (registration == 1) { 
 					
-					System.out.println("Digite o nome do jogador que deseja buscar:  /n");
-					String searchname = read.nextLine();
+					System.out.println("Digite o nome do jogador que deseja buscar:  \n");
+					String searchName = read.nextLine();
 					nSoccer.readOne(searchName);
 				
 				}
 				
 				else if (registration == 2) {
 					
-					System.out.println("Digite o nome do técnico que deseja buscar:  /n");
-					String searchname = read.nextLine();
+					System.out.println("Digite o nome do técnico que deseja buscar:  \n");
+					String searchName = read.nextLine();
 					nTechnician.readOne(searchName);
 				
 				}
 
 				else if (registration == 3 ) {
 					
-					System.out.println("Digite o nome do árbitro que deseja buscar:  /n");
-					String searchname = read.nextLine();
+					System.out.println("Digite o nome do árbitro que deseja buscar:  \n");
+					String searchName = read.nextLine();
 					nReferee.readOne(searchName);
 				
 				}
 
 				else if (registration == 4 ) {
 					
-					System.out.println("Digite o nome da seleção que deseja buscar:  /n");
-					String searchname = read.nextLine();
+					System.out.println("Digite o nome da seleção que deseja buscar:  \n");
+					String searchName = read.nextLine();
 					nTeam.readOne(searchName);
 					nSoccer.readAll(); /*PRECISA SER REVISADO !!!!!!!!*/
 				}
 				
-				else System.out.println(" Digite uma opção válida ! /n ");
+				else if (registration == 5 ) {
+					String searchDate, searchLocal,searchTime;
+					
+					System.out.println("Digite as seguintes informações para a busca:  \n");
+					
+					System.out.println("-> Data da partida:\n");
+					searchDate = read.nextLine();
+					
+					System.out.println("->Local da partida: \n");
+					searchLocal = read.nextLine();
+					
+					System.out.println("->Horário da partida: \n");
+					searchTime = read.nextLine();
+					
+					nMatch.personalitySearch(searchDate, searchLocal, searchTime);
+					
+				}
+				
+				else System.out.println(" Digite uma opção válida ! \n ");
 				
 			break;
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 			
 			case 3: /*Operação = Listar*/
-				
-				RegistrationDef choiceTwo = new RegistrationDef(opration);
-				int registration = choiceTwo.definitionTwo;
 				
 				if (registration == 1) {nSoccer.readAll();
 				
@@ -202,7 +278,11 @@ public class Principal {
 				
 				}
 				
-				else System.out.println(" Digite uma opção válida ! /n ");
+				else if (registration == 5 ) {nMatch.showEvery();
+				
+				}
+				
+				else System.out.println(" Digite uma opção válida ! \n ");
 				
 			break;
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -211,9 +291,6 @@ public class Principal {
 				
 				boolean confirm = false;
 				int update = 0;
-				
-				RegistrationDef choiceTwo = new RegistrationDef(opration);
-				int registration = choiceTwo.definitionTwo;
 				
 				if (registration == 1) {
 					
@@ -226,21 +303,21 @@ public class Principal {
 					
 					update = read.nextInt();
 					
-					System.out.println("Digite o nome do jogador que deseja corrigir: /n");
+					System.out.println("Digite o nome do jogador que deseja corrigir: \n");
 					String searchName = read.nextLine();
 					
 					if (update == 1) {
 						
-						System.out.println("Digite o nome CORRETO do jogador que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO do jogador que deseja corrigir: \n");
 						String newName = read.nextLine();
 						
-						confirm = nSoccer.updateName(String searchName, String newName);
+						confirm = nSoccer.updateName( searchName, newName);
 					
 					}
 					
 					else if (update == 2) {
 						
-						System.out.println("Digite o nome CORRETO do país do jogador que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO do país do jogador que deseja corrigir: \n");
 						String newNationality = read.nextLine();
 						
 						confirm = nSoccer.updateNationality(searchName,newNationality);
@@ -249,28 +326,28 @@ public class Principal {
 					
 					else if (update == 3) {
 						
-						System.out.println("Digite a quatidade CORRETA de cartões amarelos do jogador que deseja corrigir: /n");
-						String newYellowCard = read.nextLine();
+						System.out.println("Digite a quatidade CORRETA de cartões amarelos do jogador que deseja corrigir: \n");
+						int newYellowCard = read.nextInt();
 						confirm = nSoccer.updateYellowCard(searchName, newYellowCard);
 					
 					}
 					
 					else if (update == 4) {
 						
-						System.out.println("Digite a quatidade CORRETA de cartões vermelhos do jogador que deseja corrigir: /n");
-						String newRedCard = read.nextLine();
+						System.out.println("Digite a quatidade CORRETA de cartões vermelhos do jogador que deseja corrigir: \n");
+						int newRedCard = read.nextInt();
 						confirm = nSoccer.updateRedCard(searchName, newRedCard);
 					
 					}
 					
 					else if (update == 5) {
 						
-						System.out.println("Digite a quatidade CORRETA de gols do jogador que deseja corrigir: /n");
-						String newPoints = read.nextLine();
-						confirm = nSoccer.upadatePoints();
+						System.out.println("Digite a quatidade CORRETA de gols do jogador que deseja corrigir: \n");
+						int newPoints = read.nextInt();
+						confirm = nSoccer.upadatePoints(searchName, newPoints);
 					}
 					
-					else System.out.println(" Digite uma opção válida ! /n ");
+					else System.out.println(" Digite uma opção válida ! \n ");
 					
 				}
 				
@@ -285,51 +362,51 @@ public class Principal {
 					
 					update = read.nextInt();
 					
-					System.out.println("Digite o nome do técnico que deseja corrigir: /n");
+					System.out.println("Digite o nome do técnico que deseja corrigir: \n");
 					String searchName = read.nextLine();
 					
 					if (update == 1) {
 					
-						System.out.println("Digite o nome CORRETO do técnico que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO do técnico que deseja corrigir: \n");
 						String newName = read.nextLine();
 					
-						comfirm = nTechnician.updateName(String searchName, String newName);
+						confirm = nTechnician.updateName( searchName, newName);
 					}
 	
 					else if (update == 2 ) {
 						
-						System.out.println("Digite o nome CORRETO do país do técnico que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO do país do técnico que deseja corrigir: \n");
 						String newNationality = read.nextLine();
 						
-						confirm = nTechnician.updateNationality(String searchName, String newNationality);
+						confirm = nTechnician.updateNationality( searchName, newNationality);
 					
 					}
 	
 					else if (update == 3 ) {
 						
-						System.out.println("Digite a quatidade CORRETA de cartões amarelos do técnico que deseja corrigir: /n");
-						String newYellowCard = read.nextLine();
+						System.out.println("Digite a quatidade CORRETA de cartões amarelos do técnico que deseja corrigir: \n");
+						int newYellowCard = read.nextInt();
 						confirm = nTechnician.updateYellowCard(searchName, newYellowCard);
 					
 					}
 					
 					else if (registration == 4 ) {
 						
-						System.out.println("Digite a quatidade CORRETA de cartões vermelhos do jogador que deseja corrigir: /n");
-						String newRedCard = read.nextLine();
-						confirm = nTechnician.updateRedCard(searchName, newYellowCard);
+						System.out.println("Digite a quatidade CORRETA de cartões vermelhos do jogador que deseja corrigir: \n");
+						int newRedCard = read.nextInt();
+						confirm = nTechnician.updateRedCard(searchName, newRedCard);
 					
 					}
 					
 					else if (registration == 5 ) {
 					
-					System.out.println("Digite a seleção CORRETA do técnico que deseja corrigir: /n");
+					System.out.println("Digite a seleção CORRETA do técnico que deseja corrigir: \n");
 					String newTeamKey = read.nextLine();
 					confirm = nTechnician.updateTeamKey(searchName,newTeamKey);
 					
 					}
 					
-					else System.out.println(" Digite uma opção válida ! /n ");
+					else System.out.println(" Digite uma opção válida ! \n ");
 				}	
 				
 				else if (registration == 3) {
@@ -339,30 +416,30 @@ public class Principal {
 					
 					update = read.nextInt();
 					
-					System.out.println("Digite o nome do árbitro que deseja corrigir: /n");
+					System.out.println("Digite o nome do árbitro que deseja corrigir: \n");
 					String searchName = read.nextLine();
 					
 					if (update == 1) {
 					
 						
 					
-						System.out.println("Digite o nome CORRETO do árbitro que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO do árbitro que deseja corrigir: \n");
 						String newName = read.nextLine();
 					
-						comfirm = nReferee.updateName(String searchName, String newName);
+						confirm = nReferee.updateName( searchName, newName);
 					
 					}
 					
 					else if (update == 2 ) {
 						
-						System.out.println(" Digite o nome CORRETO do país do árbitro que deseja corrigir: /n" );
+						System.out.println(" Digite o nome CORRETO do país do árbitro que deseja corrigir: \n" );
 						String newNationality = read.nextLine();
 						
-						confirm = nReferee.updateNationality(String searchName, String newNationality);
+						confirm = nReferee.updateNationality( searchName, newNationality);
 						
 					}
 					
-					else System.out.println(" Digite uma opção válida ! /n ");
+					else System.out.println(" Digite uma opção válida ! \n ");
 				}	
 				
 				else if (registration == 4) {
@@ -372,41 +449,83 @@ public class Principal {
 					
 					update = read.nextInt();
 					
-					System.out.println("Digite o nome da seleção que deseja corrigir: /n");
+					System.out.println("Digite o nome da seleção que deseja corrigir: \n");
 					String searchName = read.nextLine();
 						
 					if (update == 1) {
 						
-						System.out.println("Digite o nome CORRETO da seleção que deseja corrigir: /n");
+						System.out.println("Digite o nome CORRETO da seleção que deseja corrigir: \n");
 						String newName = read.nextLine();
 						
-						comfirm = nTeam.updateName(String searchName, String newName);
+						confirm = nTeam.updateName( searchName, newName);
 					
 					}
 	
 					else if (update == 2 ) nTeam.updatetechnician();
 					
-					else System.out.println(" Digite uma opção válida ! /n ");
+					else System.out.println(" Digite uma opção válida ! \n ");
 				}
 				
-				else System.out.println ("Digite uma opção válida !!!");
+				else if (registration == 5) {
+					
+					String searchDate, searchLocal,searchTime;
+					
+					System.out.println("Digite as seguintes informações para a busca:  \n");
+					
+					System.out.println("-> Data da partida:\n");
+					searchDate = read.nextLine();
+					
+					System.out.println("->Local da partida: \n");
+					searchLocal = read.nextLine();
+					
+					System.out.println("->Horário da partida: \n");
+					searchTime = read.nextLine();
+					
+					nMatch.deleteMatch(searchDate, searchLocal, searchTime);
+					
+					/*-------------------------------------------------------------------------------------------------------------------- */
+					System.out.println("Digite a data da partida: \n");
+					date = read.nextLine();
+					
+					
+					System.out.println("Digite o local da partida: \n");
+					local = read.nextLine();
+					
+					System.out.println("Digite o horário da partida:\n -> 7:00 \n -> 10:00 hrs \n -> 13;00 hrs \n -> 16:00 \n");
+					time = read.nextLine();
+					
+					System.out.println("Digite o time 1: \n");
+					teamOne = read.nextLine();
+					
+					System.out.println("Digite o time 2: \n");
+					teamTwo = read.nextLine();
+					
+					System.out.println("Digite o nº de gols do time" + teamOne + ":" + "\n");
+					golsT1 = read.nextInt();
+					
+					System.out.println("Digite o nº de gols do time" + teamTwo + ":" + "\n");
+					golsT2 = read.nextInt();
+					
+					nMatch.registrationMatch();
+					
+					
+					
+				}
+				
+					else System.out.println ("Digite uma opção válida !!!");
 				
 				
 				if (confirm = true) {
 					System.out.println("Atualização feita com sucesso !");
-				}
+					}
 				else System.out.println("Não foi possivel localizar essa informação !");
+			
 				
 			break;
 				
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 				
 			case 5: /*Operação = Deletar*/
-				
-				RegistrationDef choiceTwo = new RegistrationDef(opration);
-				int registration = choiceTwo.definitionTwo;
-				
-				boolean confirm = false;
 				
 				if (registration == 1) {
 					
@@ -421,40 +540,62 @@ public class Principal {
 					System.out.println(" Digite o nome do técnico que deseja deletar: ");
 					String deleteName = read.nextLine();
 					
-					confirm = Technician.delete(deleteName);
+					 confirm = nTechnician.delete(deleteName);
 				}
 
 				else if (registration == 3 ) {
 					
 					System.out.println(" Digite o nome do árbitro que deseja deletar: ");
 					String deleteName = read.nextLine();
-					
+			
 					confirm = nReferee.delete(deleteName);
 				}
 
 				else if (registration == 4 ) {
 					
-					System.out.println(" Digite o nome da seleção que deseja deletar: ");
+					System.out.println(" Digite o nome da seleção que deseja deletar: \n");
 					String deleteName = read.nextLine();
 					
+					System.out.println(" Digite o grupo da seleção: \n");
+					String dGroup = read.nextLine();
+					
 					confirm = nTeam.delete(deleteName);
+					GsChampions.deleteOfGroup(deleteName, dGroup);
+				
+				}
+				
+				else if (registration == 5 ) {
+					
+					String searchDate, searchLocal,searchTime;
+					
+					System.out.println("Digite as seguintes informações para a busca:  \n");
+					
+					System.out.println("-> Data da partida:\n");
+					searchDate = read.nextLine();
+					
+					System.out.println("->Local da partida: \n");
+					searchLocal = read.nextLine();
+					
+					System.out.println("->Horário da partida: \n");
+					searchTime = read.nextLine();
+					
+					nMatch.deleteMatch(searchDate, searchLocal, searchTime);
 				
 				}
 				
 				else System.out.println("Digite uma opção válida ");
 				
-				if(confirm == true) System.out.println( deleteName + "foi deletado !");
-				else System.out.println( deleteName + "não foi encontrado!");
-				
-				break;
+			break;
 				
 			default: 
+				
 				System.out.println("Opção invalida !!! \n ");
-				
 			}
-				
-		System.out.println("Deseja continuar no programa ?");
-		System.out.println("0 - Sim \t 1 - Nao \n ");
+
+		
+			System.out.println("Deseja continuar no programa ?");
+			System.out.println("0 - Sim \t 1 - Nao \n ");
+		
 		endProgram = read.nextInt();
 		
 		} while(endProgram == 0);
